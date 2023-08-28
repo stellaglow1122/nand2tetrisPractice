@@ -1,0 +1,44 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/Mux8Way16.hdl
+
+/**
+ * 8-way 16-bit multiplexor:
+ * out = a if sel == 000
+ *       b if sel == 001
+ *       etc.
+ *       h if sel == 111
+ */
+
+CHIP Mux8Way16 {
+    IN a[16], b[16], c[16], d[16],
+       e[16], f[16], g[16], h[16],
+       sel[3];
+    OUT out[16];
+
+    PARTS:
+    //Mux4Way16(a=a[0..15], b=b[0..15], c=c[0..15], d=d[0..15], sel=sel[0..1], out=outabcd[0..15]);
+    //Mux4Way16(a=e[0..15], b=f[0..15], c=g[0..15], d=h[0..15], sel=sel[0..1], out=outefgh[0..15]);
+    Mux4Way16(a=a, b=b, c=c, d=d, sel=sel[0..1], out=outabcd);
+    Mux4Way16(a=e, b=f, c=g, d=h, sel=sel[0..1], out=outefgh);
+    Mux4Way16(a=outabcd, b=outabcd, c=outefgh, d=outefgh, sel=sel[1..2], out=out);
+    /*
+    Mux(a=outabcd[0], b=outefgh[0], sel[2], out=out[0]);
+    Mux(a=outabcd[1], b=outefgh[1], sel[2], out=out[1]);
+    Mux(a=outabcd[2], b=outefgh[2], sel[2], out=out[2]);
+    Mux(a=outabcd[3], b=outefgh[3], sel[2], out=out[3]);
+    Mux(a=outabcd[4], b=outefgh[4], sel[2], out=out[4]);
+    Mux(a=outabcd[5], b=outefgh[5], sel[2], out=out[5]);
+    Mux(a=outabcd[6], b=outefgh[6], sel[2], out=out[6]);
+    Mux(a=outabcd[7], b=outefgh[7], sel[2], out=out[7]);
+    Mux(a=outabcd[8], b=outefgh[8], sel[2], out=out[8]);
+    Mux(a=outabcd[9], b=outefgh[9], sel[2], out=out[9]);
+    Mux(a=outabcd[10], b=outefgh[10], sel[2], out=out[10]);
+    Mux(a=outabcd[11], b=outefgh[11], sel[2], out=out[11]);
+    Mux(a=outabcd[12], b=outefgh[12], sel[2], out=out[12]);
+    Mux(a=outabcd[13], b=outefgh[13], sel[2], out=out[13]);
+    Mux(a=outabcd[14], b=outefgh[14], sel[2], out=out[14]);
+    Mux(a=outabcd[15], b=outefgh[15], sel[2], out=out[15]);
+    */
+}

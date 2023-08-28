@@ -1,0 +1,78 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/DMux8Way.hdl
+
+/**
+ * 8-way demultiplexor:
+ * {a, b, c, d, e, f, g, h} = {in, 0, 0, 0, 0, 0, 0, 0} if sel == 000
+ *                            {0, in, 0, 0, 0, 0, 0, 0} if sel == 001
+ *                            etc.
+ *                            {0, 0, 0, 0, 0, 0, 0, in} if sel == 111
+ */
+
+CHIP DMux8Way {
+    IN in, sel[3];
+    OUT a, b, c, d, e, f, g, h;
+
+    PARTS:
+    Nand(a=sel[0], b=sel[0], out=selnot0);
+    Nand(a=sel[1], b=sel[1], out=selnot1);
+    Nand(a=sel[2], b=sel[2], out=selnot2);
+    //a = in.sel[0]'.sel[1]'.sel[2]'
+    Nand(a=in, b=selnot0, out=out1);
+    Nand(a=out1, b=out1, out=out2);
+    Nand(a=out2, b=selnot1, out=out3);
+    Nand(a=out3, b=out3, out=out4);
+    Nand(a=out4, b=selnot2, out=out5);
+    Nand(a=out5, b=out5, out=a);
+    //b = in.sel[0].sel[1]'.sel[2]'
+    Nand(a=in, b=sel[0], out=out6);
+    Nand(a=out6, b=out6, out=out7);
+    Nand(a=out7, b=selnot1, out=out8);
+    Nand(a=out8, b=out8, out=out9);
+    Nand(a=out9, b=selnot2, out=out10);
+    Nand(a=out10, b=out10, out=b);
+    //c = in.sel[0]'.sel[1].sel[2]'
+    Nand(a=in, b=selnot0, out=out11);
+    Nand(a=out11, b=out11, out=out12);
+    Nand(a=out12, b=sel[1], out=out13);
+    Nand(a=out13, b=out13, out=out14);
+    Nand(a=out14, b=selnot2, out=out15);
+    Nand(a=out15, b=out15, out=c);
+    //d = in.sel[0].sel[1].sel[2]'
+    Nand(a=in, b=sel[0], out=out16);
+    Nand(a=out16, b=out16, out=out17);
+    Nand(a=out17, b=sel[1], out=out18);
+    Nand(a=out18, b=out18, out=out19);
+    Nand(a=out19, b=selnot2, out=out20);
+    Nand(a=out20, b=out20, out=d);
+    //e = in.sel[0]'.sel[1]'.sel[2]
+    Nand(a=in, b=selnot0, out=out21);
+    Nand(a=out21, b=out21, out=out22);
+    Nand(a=out22, b=selnot1, out=out23);
+    Nand(a=out23, b=out23, out=out24);
+    Nand(a=out24, b=sel[2], out=out25);
+    Nand(a=out25, b=out25, out=e);
+    //f = in.sel[0].sel[1]'.sel[2]
+    Nand(a=in, b=sel[0], out=out26);
+    Nand(a=out26, b=out26, out=out27);
+    Nand(a=out27, b=selnot1, out=out28);
+    Nand(a=out28, b=out28, out=out29);
+    Nand(a=out29, b=sel[2], out=out30);
+    Nand(a=out30, b=out30, out=f);
+    //g = in.sel[0]'.sel[1].sel[2]
+    Nand(a=in, b=selnot0, out=out31);
+    Nand(a=out31, b=out31, out=out32);
+    Nand(a=out32, b=sel[1], out=out33);
+    Nand(a=out33, b=out33, out=out34);
+    Nand(a=out34, b=sel[2], out=out35);
+    Nand(a=out35, b=out35, out=g);
+    //h = in.sel[0].sel[1].sel[2]
+    Nand(a=in, b=sel[0], out=out36);
+    Nand(a=out36, b=out36, out=out37);
+    Nand(a=out37, b=sel[1], out=out38);
+    Nand(a=out38, b=out38, out=out39);
+    Nand(a=out39, b=sel[2], out=out40);
+    Nand(a=out40, b=out40, out=h);
+}
