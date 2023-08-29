@@ -15,5 +15,46 @@ CHIP RAM16K {
     OUT out[16];
 
     PARTS:
-    // Put your code here:
+    Not(in=address[0], out=not0);
+    And(a=address[0], b=not0, out=zero);
+    Not(in=address[1], out=not1);
+    Not(in=address[2], out=not2);
+
+    // 000
+    And(a=not0, b=not1, out=andnot0not1);
+    And(a=andnot0not1, b=not2, out=andnot0not1not2);
+    And(a=andnot0not1not2, b=load, out=loada);
+    RAM4K(in=in, load=loada, address[0..10]=address[3..13], address[11]=zero, out=outa);
+    // 001
+    And(a=address[0], b=not1, out=and0not1);
+    And(a=and0not1, b=not2, out=and0not1not2);
+    And(a=and0not1not2, b=load, out=loadb);
+    RAM4K(in=in, load=loadb, address[0..10]=address[3..13], address[11]=zero, out=outb);
+    // 010
+    And(a=not0, b=address[1], out=andnot01);
+    And(a=andnot01, b=not2, out=andnot01not2);
+    And(a=andnot01not2, b=load, out=loadc);
+    RAM4K(in=in, load=loadc, address[0..10]=address[3..13], address[11]=zero, out=outc);
+    // 011
+    And(a=address[0], b=address[1], out=and01);
+    And(a=and01, b=not2, out=and01not2);
+    And(a=and01not2, b=load, out=loadd);
+    RAM4K(in=in, load=loadd, address[0..10]=address[3..13], address[11]=zero, out=outd);
+    // 100
+    And(a=andnot0not1, b=address[2], out=andnot0not12);
+    And(a=andnot0not12, b=load, out=loade);
+    RAM4K(in=in, load=loade, address[0..10]=address[3..13], address[11]=zero, out=oute);
+    // 101
+    And(a=and0not1, b=address[2], out=and0not12);
+    And(a=and0not12, b=load, out=loadf);
+    RAM4K(in=in, load=loadf, address[0..10]=address[3..13], address[11]=zero, out=outf);
+    // 110
+    And(a=andnot01, b=address[2], out=andnot012);
+    And(a=andnot012, b=load, out=loadg);
+    RAM4K(in=in, load=loadg, address[0..10]=address[3..13], address[11]=zero, out=outg);
+    // 111
+    And(a=and01, b=address[2], out=and012);
+    And(a=and012, b=load, out=loadh);
+    RAM4K(in=in, load=loadh, address[0..10]=address[3..13], address[11]=zero, out=outh);
+    Mux8Way16(a=outa, b=outb, c=outc, d=outd, e=oute, f=outf, g=outg, h=outh, sel=address[0..2], out=out);
 }
