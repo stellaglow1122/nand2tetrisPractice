@@ -40,4 +40,20 @@ CHIP CPU {
 
     PARTS:
     // Put your code here:
+    Mux16(a=instruction, b=ALUOutput, sel=instruction[5], out=inputForARegister);
+    Register(in=inputForARegister, load=, out=outputOfARegister); // A Register
+    Mux16(a=outputOfARegister, b=inM, sel=, out=ValueOfAOrMRegister);
+    Register(in=ALUOutput, load=, out=outputOfDRegister); // D Register
+    //x[16], y[16],  // 16-bit inputs        
+    //zx, // zero the x input?
+    //nx, // negate the x input?
+    //zy, // zero the y input?
+    //ny, // negate the y input?
+    //f,  // compute out = x + y (if 1) or x & y (if 0)
+    //no; // negate the out output?
+    //out[16], // 16-bit output
+    //zr, // 1 if (out == 0), 0 otherwise
+    //ng; // 1 if (out < 0),  0 otherwise
+    ALU(x=outputOfDRegister, y=ValueOfAOrMRegister, zx=, nx=, zy=, ny=, f=, no=, out=outM, zr=, ng=, );
+    ALU(x=outputOfDRegister, y=ValueOfAOrMRegister, zx=, nx=, zy=, ny=, f=, no=, out=ALUOutput, zr=, ng=, );
 }
